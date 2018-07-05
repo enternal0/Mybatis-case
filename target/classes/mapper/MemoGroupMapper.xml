@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dan.mybatis.mapper.MemoGroupMapper">
+
+        <resultMap id="memoGroupMap" type="com.dan.mybatis.entity.MemoGroup" >
+
+			<id jdbcType="INTEGER" javaType="int" column="id" property="id"/>
+
+			<result jdbcType="VARCHAR" javaType="string" column="name" property="name"/>
+
+			<result jdbcType="TIMESTAMP" javaType="date" column="created_time" property="createdTime"/>
+
+			<result jdbcType="TIMESTAMP" javaType="date" column="modify_time" property="modifyTime"/>
+
+        </resultMap>
+    <sql id="clumn_name">
+      id,
+      name,
+      created_time,
+      modify_time
+    </sql>
+      <!--插入一个便签组-->
+    <insert id="insetMemoGroup" parameterType="MemoGroup">
+        insert into memo_group (name,created_time) values
+           (#{name},#{createdTime})
+    </insert>
+    <update id="updateMemoGroup" parameterType="MemoGroup" >
+          update memo_group
+          <set>
+              <if test="name!=null">
+                  name=#{name},
+              </if>
+              <if test="createdTime!=null">
+                  created_time=#{createdTime},
+              </if>
+              <if test="modifyTime!=null">
+                  modify_time=#{modifyTime},
+              </if>
+          </set>
+        where id=#{id}
+    </update>
+    <delete id="deleteMemoGroup">
+           delete from memo_group where id=#{id}
+    </delete>
+
+    <!--查询所有便签组-->
+    <select id="queryAll" resultMap="memoGroupMap">
+          select <include refid="clumn_name"/> from memo_group;
+    </select>
+</mapper>
